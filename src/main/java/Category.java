@@ -37,4 +37,8 @@ public  class Category {
 	public List<Task> getTasks() {
 		return mTasks;
 	}
+
+	public void addTask(Task task) {
+		mTasks.add(task);
+	}
 }
