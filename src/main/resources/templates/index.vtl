@@ -1,8 +1,11 @@
 <h1> Task List!</h1>
-#if ($task)
+#if ($tasks)
 <h3>All tasks</h3>
-	<p>Current task:</p>
-	<p>$task.getDescription()</p>
+	<ul>
+	#foreach($task in $tasks)
+		<li><p>$task.getDescription()</p></li>
+	#end
+	</ul>
 #else
 	<p>No tasks!</p>
 #end
