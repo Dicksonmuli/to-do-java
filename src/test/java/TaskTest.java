@@ -57,5 +57,3 @@ public void find_returnsTaskWithSameId_secondTask() {
   assertEquals(Task.find(secondTask.getId()), secondTask);
 }
 }
-
-}
