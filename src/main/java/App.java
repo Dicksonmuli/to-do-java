@@ -45,6 +45,14 @@ public class App {
   		model.put("template", "templates/category.vtl");
   		return new ModelAndView(model, layout);
 			}, new VelocityTemplateEngine());
+
+			get("categories/:id/tasks/new", (request, response) -> {
+  Map<String, Object> model = new HashMap<String, Object>();
+  Category category = Category.find(Integer.parseInt(request.params(":id")));
+  model.put("category", category);
+  model.put("template", "templates/category-tasks-form.vtl");
+  return new ModelAndView(model, layout);
+}, new VelocityTemplateEngine());
 		// new task
 		get("tasks/new", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
@@ -71,8 +79,12 @@ public class App {
 		 String description = request.queryParams("description");
 		 Task newTask = new Task(description);
 		//  tasks.add(newTask);
+		Category category = Category.find(Integer.parseInt(request.queryParams("categoryId")));
 
-		 model.put("template", "templates/success.vtl");
+		category.addTask(newTask);
+
+ model.put("category", category);
+ model.put("template", "templates/category-tasks-success.vtl");
 		 return new ModelAndView(model, layout);
 	 }, new VelocityTemplateEngine());
 
