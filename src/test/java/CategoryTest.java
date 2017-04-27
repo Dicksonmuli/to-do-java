@@ -2,6 +2,10 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class CategoryTest {
+  @After
+  public void clearAll() {
+    Category.clear();
+  }
 
   @Test
   public void category_instantiatesCorrectly_true() {
@@ -57,5 +61,10 @@ public void addTask_addsTaskToList_true() {
   Task testTask = new Task("Mow the lawn");
   testCategory.addTask(testTask);
   assertTrue(testCategory.getTasks().contains(testTask));
+}
+
+@Test
+public void find_returnsNullWhenNotaskFound_null() {
+  assertTrue(Category.find(999) == null);
 }
 }

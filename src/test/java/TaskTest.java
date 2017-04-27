@@ -3,6 +3,12 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class TaskTest {
+	//clearing  objects automatically
+	@After
+	public void tearDown() {
+		Task.clear();
+	}
+
 	// creating an instance of Task successfully
 	@Test
 	public void Task_instantiatesCorrectly_true() {

@@ -1,3 +1,4 @@
+#if ($category)
 <h1>$category.getName() tasks:</h1>
 
 <ul>
@@ -5,6 +6,8 @@
    <li>$task.getDescription()</li>
   #end
 </ul>
+#else
+ <em><p>Oops! We can't seem to find the Category.</p></em>
 
 <a href="/categories/$category.getId()/tasks/new">Add a new task</a>
 <a href="/categories">All categories</a>

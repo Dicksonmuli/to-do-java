@@ -31,8 +31,12 @@ public  class Category {
 	}
 
 	public static Category find(int id) {
-    return instances.get(id - 1);
-  }
+		try {
+			return instances.get(id - 1);
+		} catch (IndexOutOfBoundsException exception) {
+			return null;
+		}
+	}
 
 	public List<Task> getTasks() {
 		return mTasks;
