@@ -3,45 +3,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Task {
-	private String mDescription;
-	private boolean mCompleted;
-	private LocalDateTime mCreatedAt;
-	private static List<Task> instances = new ArrayList<Task>();
+	private String description;
+	private boolean completed;
+	private LocalDateTime createdAt;
 	private int mId;
 
 	public Task(String description) {
-			mDescription = description;
-			mCompleted = false;
-			mCreatedAt = LocalDateTime.now();
-			instances.add(this);
-			mId = instances.size();
+			this.description = description;
+			completed = false;
+			createdAt = LocalDateTime.now();
 	}
 
 	public String getDescription() {
-		return mDescription;
-	}
+	    return description;
+	  }
 
-	public boolean isCompleted() {
-		return mCompleted;
-	}
+	  public boolean isCompleted() {
+	    return completed;
+	  }
 
-	public LocalDateTime getCreatedAt() {
-		return mCreatedAt;
-	}
+	  public LocalDateTime getCreatedAt() {
+	    return createdAt;
+	  }
 
-	public static List<Task> all() {
-	 return instances;
- }
+	  public int getId() {
+	    return id;
+	  }
 
- public static void clear() {
-	 instances.clear();
- }
+	  public static Task find(int id) {
+	  }
 
- public int getId() {
-	 return mId;
- }
-
- public static Task find(int id) {
-	 return instances.get(id - 1);
- }
 }

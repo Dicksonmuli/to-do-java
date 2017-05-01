@@ -1,14 +1,21 @@
 import java.time.LocalDateTime;
 import org.junit.*;
 import static org.junit.Assert.*;
+import org.sql2o.*;
 
 public class TaskTest {
-	//clearing  objects automatically
-	@After
-	public void tearDown() {
-		Task.clear();
+	
+	@Before
+	public void setUp() {
+		DB.sql2o = new Sql2o("jdbc:postgresql://localhost:5432/to_do_test", null, null);
 	}
-
+	@After
+  public void tearDown() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM tasks *;";
+      con.createQuery(sql).executeUpdate();
+    }
+  }
 	// creating an instance of Task successfully
 	@Test
 	public void Task_instantiatesCorrectly_true() {
