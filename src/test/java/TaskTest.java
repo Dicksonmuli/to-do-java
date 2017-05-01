@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import org.sql2o.*;
 
 public class TaskTest {
-	
+
 	@Before
 	public void setUp() {
 		DB.sql2o = new Sql2o("jdbc:postgresql://localhost:5432/to_do_test", null, null);
@@ -48,7 +48,13 @@ public class TaskTest {
 		assertEquals(true, Task.all().contains(firtTask));
 		assertEquals(true, Task.all().contains(secondTask));
 	}
-
+	//returns true since they are saved in different memory parts
+	@Test
+	public void equals_returnsTrueIfDescriptionsAretheSame() {
+	  Task firstTask = new Task("Mow the lawn");
+	  Task secondTask = new Task("Mow the lawn");
+	  assertTrue(firstTask.equals(secondTask));
+	}
 	@Test
 	public void clear_emptiesAllTasksFromArrayList_0() {
   Task myTask = new Task("Mow the lawn");
