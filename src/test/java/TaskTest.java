@@ -12,67 +12,115 @@ public class TaskTest {
 	@After
   public void tearDown() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "DELETE FROM tasks *;";
-      con.createQuery(sql).executeUpdate();
-    }
+			String deleteTasksQuery = "DELETE FROM tasks *;";
+				 String deleteCategoriesQuery = "DELETE FROM categories *;";
+				 con.createQuery(deleteTasksQuery).executeUpdate();
+				 con.createQuery(deleteCategoriesQuery).executeUpdate();
+			 }
   }
 	// creating an instance of Task successfully
 	@Test
 	public void Task_instantiatesCorrectly_true() {
-		Task myTask = new Task("Mow the lawn");
+		Task myTask = new Task("Mow the lawn", 1);
 		assertEquals(true, myTask instanceof Task);
 	}
 	// assigning each task a description and then retrieve it
 	@Test
 	public void Task_instantiatesWithDescription_String() {
-		Task myTask = new Task("Mow the lawn");
-		assertEquals("Mow the lawn", myTask.getDescription());
+		Task myTask = new Task("Mow the lawn", 1);
+		assertEquals("Mow the lawn", 1, myTask.getDescription());
 	}
 	//equate to false if a task if not completed
 	@Test
 	public void isCompleted_isFalseAfterInstantiation_false() {
-		Task myTask = new Task("Mow the lawn");
+		Task myTask = new Task("Mow the lawn", 1);
 		assertFalse(myTask.isCompleted());
 	}
 	//instanciate with time
 	@Test
 	public void getCreatedAt_instantiatesWithCurrentTime_today() {
-		Task myTask = new Task("Mow the lawn");
+		Task myTask = new Task("Mow the lawn", 1);
 		assertEquals(LocalDateTime.now().getDayOfWeek(), myTask.getCreatedAt().getDayOfWeek());
 	}
-	//returns all instances of task
-	@Test
-	public void all_returnsAllInstancesOfTask_true() {
-		Task firtTask = new Task("Mow the lawn");
-		Task secondTask = new Task("Buy groceries");
-		assertEquals(true, Task.all().contains(firtTask));
-		assertEquals(true, Task.all().contains(secondTask));
-	}
-	//returns true since they are saved in different memory parts
-	@Test
-	public void equals_returnsTrueIfDescriptionsAretheSame() {
-	  Task firstTask = new Task("Mow the lawn");
-	  Task secondTask = new Task("Mow the lawn");
-	  assertTrue(firstTask.equals(secondTask));
-	}
+
 	@Test
 	public void clear_emptiesAllTasksFromArrayList_0() {
-  Task myTask = new Task("Mow the lawn");
-  Task.clear();
+  Task myTask = new Task("Mow the lawn", 1);
   assertEquals(Task.all().size(), 0);
 }
 
 @Test
 public void getId_tasksInstantiateWithAnID_1() {
   Task.clear();  // Remember, the test will fail without this line! We need to empty leftover Tasks from previous tests!
-  Task myTask = new Task("Mow the lawn");
+  Task myTask = new Task("Mow the lawn", 1);
   assertEquals(1, myTask.getId());
 }
 
 @Test
 public void find_returnsTaskWithSameId_secondTask() {
-	Task firstTask = new Task("Mow the lawn");
-  Task secondTask = new Task("Buy groceries");
+	Task firstTask = new Task("Mow the lawn", 1);
+	firstTask.save();
+  Task secondTask = new Task("Buy groceries", 2);
+	secondTask.save();
   assertEquals(Task.find(secondTask.getId()), secondTask);
 }
+
+//returns true
+@Test
+public void equals_returnsTrueIfDescriptionsAretheSame() {
+	Task firstTask = new Task("Mow the lawn", 1);
+	Task secondTask = new Task("Mow the lawn", 1);
+	assertTrue(firstTask.equals(secondTask));
+}
+@Override
+public boolean equals(Object otherTask) {
+	if (!(otherTask instanceof Task)) {
+		return false;
+	} else {
+		Task newTask = (Task) otherTask;
+		return this.getDescription().equals(newTask.getDescription()) && this.getId() == newTask.getId() && this.getCategoryId() == newTask.getCategoryId();;
+	}
+	}
+
+ 	@Test
+	public void save_returnsTrueIfDescriptionsAretheSame() {
+		Task myTask = new Task("Mow the lawn", 1);
+		myTask.save();
+		assertTrue(Task.all().get(0).equals(myTask));
+	}
+
+	@Test
+  public void all_returnsAllInstancesOfTask_true() {
+    Task firstTask = new Task("Mow the lawn", 1);
+    firstTask.save();
+    Task secondTask = new Task("Buy groceries", 2);
+    secondTask.save();
+    assertEquals(true, Task.all().get(0).equals(firstTask));
+    assertEquals(true, Task.all().get(1).equals(secondTask));
+  }
+
+	@Test
+	public void save_assignsIdToObject() {
+	  Task myTask = new Task("Mow the lawn", 1);
+	  myTask.save();
+	  Task savedTask = Task.all().get(0);
+	  assertEquals(myTask.getId(), savedTask.getId());
+	}
+
+	@Test
+  public void getId_tasksInstantiateWithAnID() {
+    Task myTask = new Task("Mow the lawn", 1);
+    myTask.save();
+    assertTrue(myTask.getId() > 0);
+  }
+
+	@Test
+	public void save_savesCategoryIdIntoDB_true() {
+	 Category myCategory = new Category("Household chores");
+		myCategory.save();
+		Task myTask = new Task("Mow the lawn", 1, myCategory.getId());
+		myTask.save();
+		Task savedTask = Task.find(myTask.getId());
+		assertEquals(savedTask.getCategoryId(), myCategory.getId());
+		 }
 }
