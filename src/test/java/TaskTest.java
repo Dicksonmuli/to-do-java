@@ -18,6 +18,7 @@ public class TaskTest {
 				 con.createQuery(deleteCategoriesQuery).executeUpdate();
 			 }
   }
+	
 	// creating an instance of Task successfully
 	@Test
 	public void Task_instantiatesCorrectly_true() {
