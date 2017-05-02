@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
+import org.sql2o.*;
 
 public  class Category {
 	private String name;
@@ -11,9 +12,6 @@ public  class Category {
 
 		public String getName() {
 			 return name;
-		 }
-
-		 public static List<Category> all() {
 		 }
 
 		 public int getId() {
@@ -53,4 +51,13 @@ public  class Category {
             .getKey();
          }
     }
+		@Override
+		 public boolean equals(Object otherCategory) {
+			 if (!(otherCategory instanceof Category)) {
+				 return false;
+			 } else {
+				 Category newCategory = (Category) otherCategory;
+				 return this.getName().equals(newCategory.getName()) && this.getId() == newCategory.getId();
+			 }
+}
 }
